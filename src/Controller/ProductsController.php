@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\DTO\LowestPriceEnquiry;
@@ -57,3 +56,39 @@ class ProductsController extends AbstractController
     }
 
 }
+
+/**
+ * We are dealing with two entities:
+ *
+ *
+ * 1. PRODUCT
+ *      - id (int)
+ *      - price (int)
+ *
+ * 2. PROMOTION
+ *     - id (int)
+ *     - name (string)
+ *     - type (string)
+ *     - adjustment (float)
+ *     - criteria (string|json)
+ *
+ * 3. PRODUCT_PROMOTION
+ *      - id (int)
+ *      - product_id (int)
+ *      - promotion_id (int)
+ *      - valid_to (datetime)
+ *
+ *=============================================================================
+ * id: 1
+ * name: Black Friday half price sale!
+ * type: date_range_multiplier
+ * adjustment: 0.5
+ * criteria: {"start_date": "2021-11-26", "end_date": "2021-11-29"}
+ *=============================================================================
+ *  id: 2
+ *  name: Voucher OU812
+ *  type: fixed_price_voucher
+ *  adjustment: 100
+ *  criteria: {"code": "OU812"}
+ * =============================================================================
+ */
