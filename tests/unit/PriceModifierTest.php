@@ -59,4 +59,28 @@ class PriceModifierTest extends ServiceTestCase
         $this->assertSame(400, $modifiedPrice);
     }
 
+    /** @test */
+    public function evenItemsMultiplier_returns_a_correctly_modified_price(): void
+    {
+        // Given
+        $priceModifierFactory = new PriceModifierFactory();
+        $enquiry = new LowestPriceEnquiry();
+        $enquiry->setRequestDate('2023-08-31');
+        $enquiry->setQuantity(5);
+        $enquiry->setVoucherCode('OU812');
+
+        $promotion = new Promotion();
+        $promotion->setName('Buy one get one free');
+        $promotion->setAdjustment(0.5);
+        $promotion->setCriteria(["minimum_quantity" => 2]);
+        $promotion->setType('even_items_multiplier');
+
+        $priceModifier = $priceModifierFactory->create($promotion->getType());
+
+        // When
+        $modifiedPrice = $priceModifier->modify(100, $enquiry->getQuantity(), $promotion, $enquiry);
+
+        // Then
+        $this->assertSame(300, $modifiedPrice);
+    }
 }
