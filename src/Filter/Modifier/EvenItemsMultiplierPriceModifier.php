@@ -7,7 +7,7 @@ use App\Entity\Promotion;
 
 class EvenItemsMultiplierPriceModifier implements PriceModifierInterface
 {
-    public function modify(float $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): float
+    public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
     {
         // TODO: Implement modify() method.
     }

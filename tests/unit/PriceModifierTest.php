@@ -31,7 +31,32 @@ class PriceModifierTest extends ServiceTestCase
         $modifiedPrice = $dateRangeMultiplier->modify(100, 5, $promotion, $enquiry);
 
         // Then
-        $this->assertSame(floatval(250), $modifiedPrice);
+        $this->assertSame(250, $modifiedPrice);
+    }
+
+    /** @test */
+    public function fixedPriceVoucherModifier_returns_a_correctly_modified_price(): void
+    {
+        // Given
+        $priceModifierFactory = new PriceModifierFactory();
+        $enquiry = new LowestPriceEnquiry();
+        $enquiry->setRequestDate('2023-08-31');
+        $enquiry->setQuantity(4);
+        $enquiry->setVoucherCode('OU812');
+
+        $promotion = new Promotion();
+        $promotion->setName('Voucher OU812');
+        $promotion->setAdjustment(100);
+        $promotion->setCriteria(["code" => "OU812"]);
+        $promotion->setType('fixed_price_voucher');
+
+        $priceModifier = $priceModifierFactory->create($promotion->getType());
+
+        // When
+        $modifiedPrice = $priceModifier->modify(300, $enquiry->getQuantity(), $promotion, $enquiry);
+
+        // Then
+        $this->assertSame(400, $modifiedPrice);
     }
 
 }

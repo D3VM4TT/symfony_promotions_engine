@@ -7,9 +7,12 @@ use App\Entity\Promotion;
 
 class FixedPriceVoucherPriceModifier implements PriceModifierInterface
 {
-    public function modify(float $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): float
+    public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquiry): int
     {
-        // TODO: Implement modify() method.
+      if ($enquiry->getVoucherCode() === $promotion->getCriteria()['code']) {
+        return $promotion->getAdjustment() * $quantity;
+      }
+      return $price * $quantity;
     }
 
 }
