@@ -64,7 +64,7 @@ class ProductsController extends AbstractController
         $productPromotions = $this->entityManager->getRepository(Promotion::class)->findValidForProduct(
             $product,
             new DateTime($lowestPriceEnquiry->getRequestDate())
-        );
+        ); // TODO: Add error handling for no promotions found
 
         // Promotions filter needs more info to figure out the promo, it needs the product and
         // the actual filters (the rules that will be applied to come up with the correct price)
