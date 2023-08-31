@@ -3,11 +3,9 @@
 namespace App\Tests\unit;
 
 use App\DTO\LowestPriceEnquiry;
-use App\Entity\Product;
 use App\Entity\Promotion;
-use App\Factory\PriceModifierFactory;
+use App\Filter\Factory\PriceModifierFactory;
 use App\Tests\ServiceTestCase;
-use App\Filter\LowestPriceFilter;
 
 class PriceModifierTest extends ServiceTestCase
 {
@@ -82,5 +80,31 @@ class PriceModifierTest extends ServiceTestCase
 
         // Then
         $this->assertSame(300, $modifiedPrice);
+    }
+
+
+    /** @test */
+    public function evenItemsMultiplier_correctly_calculates_buy_one_get_one_half_price(): void
+    {
+        // Given
+        $priceModifierFactory = new PriceModifierFactory();
+        $enquiry = new LowestPriceEnquiry();
+        $enquiry->setRequestDate('2023-08-31');
+        $enquiry->setQuantity(5);
+        $enquiry->setVoucherCode('OU812');
+
+        $promotion = new Promotion();
+        $promotion->setName('Buy one get one half price');
+        $promotion->setAdjustment(0.75);
+        $promotion->setCriteria(["minimum_quantity" => 2]);
+        $promotion->setType('even_items_multiplier');
+
+        $priceModifier = $priceModifierFactory->create($promotion->getType());
+
+        // When
+        $modifiedPrice = $priceModifier->modify(100, $enquiry->getQuantity(), $promotion, $enquiry);
+
+        // Then
+        $this->assertSame(400, $modifiedPrice);
     }
 }
