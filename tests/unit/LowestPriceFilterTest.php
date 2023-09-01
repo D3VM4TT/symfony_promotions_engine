@@ -22,7 +22,10 @@ class LowestPriceFilterTest extends ServiceTestCase
         $enquiry = new LowestPriceEnquiry();
         $enquiry->setProduct($product);
         $enquiry->setQuantity(5);
+        $enquiry->setRequestDate('2023-08-31');
+        $enquiry->setVoucherCode('OU812');
         $promotions = $this->promotionsDataProvider();
+
 
         // When
         $filteredEnquiry = $lowestPriceFilter->apply($enquiry, ...$promotions);
@@ -40,7 +43,7 @@ class LowestPriceFilterTest extends ServiceTestCase
         $promotion = new Promotion();
         $promotion->setName('Black Friday half price sale!');
         $promotion->setAdjustment(0.5);
-        $promotion->setCriteria(["start_date"=> "2021-11-26", "end_date"=> "2021-11-29"]);
+        $promotion->setCriteria(["start_date"=> "2021-11-26", "end_date"=> "2023-11-29"]);
         $promotion->setType('date_range_multiplier');
 
         $promotion_2 = new Promotion();
