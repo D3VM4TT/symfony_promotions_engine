@@ -22,14 +22,13 @@ class PromotionsCache
     {
         $cacheKey = 'product_promotions_' . $product->getId() . '_' . $requestDate->format('Y-m-d');
 
-        $productPromotions = $this->cache->get($cacheKey, function(ItemInterface $item) use ($product, $requestDate) {
+        return $this->cache->get($cacheKey, function(ItemInterface $item) use ($product, $requestDate) {
+            $item->expiresAfter(3600);
             return $this->entityManager->getRepository(Promotion::class)->findValidForProduct(
                 $product,
                 $requestDate
             );
         });
-
-        return $productPromotions;
     }
 
 }

@@ -6,7 +6,7 @@ services:
     container_name: promotions_engine_db
     restart: always
     volumes:
-      - ./docker/mysql:/var/lib/mysql
+      - db-data:/var/lib/mysql
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     networks:
@@ -36,6 +36,15 @@ services:
       - ./docker/php/vhosts:/etc/apache2/sites-enabled
       - ./:/var/www
     restart: always
+    networks:
+      - promotions_engine
+
+  redis:
+    image: redis:7.0.0
+    container_name: promotions_engine_redis
+    restart: always
+    ports:
+      - "6379:6379"
     networks:
       - promotions_engine
 
