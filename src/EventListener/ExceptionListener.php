@@ -2,27 +2,25 @@
 
 namespace App\EventListener;
 
+use App\Service\ServiceException;
+use App\Service\ServiceExceptionData;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionListener
 {
 
     public function onKernelException(ExceptionEvent $event): void
     {
-        // TODO: Handle other types of exceptions other than ServiceException
         $exception = $event->getThrowable();
 
-        $exceptionData = $exception->getExceptionData();
+        if ($exception instanceof ServiceException) {
+            $exceptionData = $exception->getExceptionData();
+        } else {
+            $exceptionData = new ServiceExceptionData(500, $exception->getMessage());
+        }
 
         $response = new JsonResponse($exceptionData->toArray());
-
-        if ($exception instanceof HttpException) {
-            $response->setStatusCode($exception->getStatusCode());
-        } else {
-            $response->setStatusCode(500);
-        }
 
         $event->setResponse($response);
     }

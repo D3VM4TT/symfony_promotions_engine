@@ -50,7 +50,7 @@ class ProductsController extends AbstractController
         /** @var LowestPriceEnquiry $lowestPriceEnquiry */
         $lowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
 
-        $product = $this->productRepository->find($id); // TODO: Add error handling for not found product
+        $product = $this->productRepository->findOrFail($id);
 
         $lowestPriceEnquiry->setProduct($product);
 
