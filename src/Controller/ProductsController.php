@@ -60,9 +60,7 @@ class ProductsController extends AbstractController
 
         $responseContent = $serializer->serialize($modifiedEnquiry, 'json');
 
-        return new Response($responseContent, Response::HTTP_OK, [
-            'Content-Type' => 'application/json',
-        ]);
+        return new JsonResponse(data:$responseContent, status:Response::HTTP_OK, json: true);
     }
 
     #[Route('/products/{id}/promotions', name: 'promotions', methods: ['GET'])]
