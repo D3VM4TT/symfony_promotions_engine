@@ -4,6 +4,7 @@ namespace App\Tests\unit;
 
 use App\DTO\LowestPriceEnquiry;
 use App\Event\AfterDtoCreatedEvent;
+use App\Service\ServiceException;
 use App\Tests\ServiceTestCase;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
@@ -34,7 +35,7 @@ class DtoSubscriberTest extends ServiceTestCase
 
         $eventDispatcher = $this->container->get('event_dispatcher');
 
-        $this->expectException(ValidationFailedException::class);
+        $this->expectException(ServiceException::class);
 
         $eventDispatcher->dispatch($event, AfterDtoCreatedEvent::NAME);
     }
