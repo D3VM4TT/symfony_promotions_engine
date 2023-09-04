@@ -4,6 +4,7 @@ namespace App\Tests\unit;
 
 use App\DTO\LowestPriceEnquiry;
 use App\Event\AfterDtoCreatedEvent;
+use App\EventSubscriber\DtoSubscriber;
 use App\Service\ServiceException;
 use App\Tests\ServiceTestCase;
 use Symfony\Component\Validator\Exception\ValidationFailedException;

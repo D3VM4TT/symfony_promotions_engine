@@ -2,7 +2,6 @@
 
 namespace App\EventListener;
 
-use http\Client\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -12,20 +11,12 @@ class ExceptionListener
 
     public function onKernelException(ExceptionEvent $event): void
     {
+        // TODO: Handle other types of exceptions other than ServiceException
         $exception = $event->getThrowable();
 
-        $response = new JsonResponse([
-                'type' => 'ConstraintViolationList',
-                'title' => 'An error occurred',
-                'description' => $exception->getMessage(),
-                'violations' => [
-                    [
-                        'propertyPath' => 'title',
-                        'message' => 'This value should not be blank.'
-                    ]
-                ]
-            ]
-        );
+        $exceptionData = $exception->getExceptionData();
+
+        $response = new JsonResponse($exceptionData->toArray());
 
         if ($exception instanceof HttpException) {
             $response->setStatusCode($exception->getStatusCode());
